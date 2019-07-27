@@ -43,7 +43,7 @@ function PersonInfo ({ person, searchText, active, handleMouseMove }) {
 
 
     return (
-        <div className={`PersonInfo ${PersonActive}`} onMouseOver={handleMouseMove} onMouseMove={handleMouseMove} ref={ref}>
+        <div className={`PersonInfo ${PersonActive}`} onMouseMove={handleMouseMove} ref={ref}>
             <span style={{'fontWeight': 700}}>{getView('id')}</span>
             <span style={{'paddingBottom': '5px'}}><i>{getView('name')}</i></span>
             <span className="item" style={{'display': itemDisplayState}}>{itemView}</span>
