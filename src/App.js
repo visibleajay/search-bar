@@ -9,10 +9,10 @@ class App extends React.PureComponent{
   allUsers = [];
 
   state    = {
-    "searchText": "",
-    "users": [],
-    "keyCode": 0,
-    "keyPressCount": 0
+    searchText: "",
+    users: [],
+    keyPressCount: 0,
+    isVisible: true,
   };
 
   addToString = (user) => {
@@ -91,11 +91,19 @@ class App extends React.PureComponent{
     this.setState({keyPressCount: cardIndex});
   }
 
+  handleSearchDropdownVisible = ( isVisible ) => {
+    this.setState({isVisible})
+  }
+
   render() {
     return (
       <div className="App">
-        <SearchBar onSearchInput={this.handleSearchInput} value={this.state.searchText} onKeyDown={this.handleKeyDown} />
-        <SearchDropdown searchText={this.state.searchText} users={this.state.users} activeCardIndex={this.state.keyPressCount} 
+        <SearchBar onSearchInput={this.handleSearchInput} value={this.state.searchText} onKeyDown={this.handleKeyDown} 
+                   onSearchDropdownVisible={this.handleSearchDropdownVisible}/>
+        <SearchDropdown visibility={this.state.isVisible}
+                        searchText={this.state.searchText} 
+                        users={this.state.users} 
+                        activeCardIndex={this.state.keyPressCount} 
                         onMouseMove={this.handleMouseMove} />
       </div>
     );

@@ -7,7 +7,7 @@ import PersonInfo from './person-info/person-info.js';
 import './search-dropdown.css';
 
 
-function SearchDropdown({searchText, users, activeCardIndex, onMouseMove}) {
+function SearchDropdown({visibility, searchText, users, activeCardIndex, onMouseMove}) {
 
     function noUserCard(hideCard) {
         return (
@@ -32,9 +32,10 @@ function SearchDropdown({searchText, users, activeCardIndex, onMouseMove}) {
     const hideCard           =   !searchText ? 'hideCard' : '';
 
     return (
+        visibility ? 
         <div className="ResultView">
             { isNoUserPresent ? noUserCard(hideCard) : userInfoList(users, searchText) }
-        </div>
+        </div> : null
     );
 }
 
