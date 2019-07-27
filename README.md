@@ -7,5 +7,5 @@ Search bar project was created in company hiring process. Have used [Create Reac
 1. Custom Dropdown to highlight the searched text.
 2. Handle Keyboard/Mouse navigation to highlight the selected box.
 
-
+![Search Bar Screenshot](https://github.com/visibleajay/search-bar/blob/master/Search%20Bar.png "Search Bar")
 
