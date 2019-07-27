@@ -1,0 +1,33 @@
+
+.ResultView {
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    top: 6vmin;
+    -webkit-box-shadow: 0px 23px 38px 2px rgba(195,195,195,1);
+    -moz-box-shadow: 0px 23px 38px 2px rgba(195,195,195,1);
+    box-shadow: 0px 23px 38px 2px rgba(195,195,195,1);
+}
+
+.ResultView .NoUser {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 20vmin;
+}
+
+.ResultView .User {
+    max-height: 60vmin;
+    overflow-y: scroll;
+}
+
+.ResultView .hideCard {
+    display: none;
+}
+
+.User:focus {
+    outline: none;
+}
+
+
+
