@@ -40,8 +40,11 @@ function SearchDropdown({visibility, searchText, users, activeCardIndex, onMouse
 }
 
 SearchDropdown.propTypes = {
+    visibility: PropTypes.bool.isRequired,
     searchText: PropTypes.string.isRequired,
-    users: PropTypes.arrayOf(PropTypes.object).isRequired
+    users: PropTypes.arrayOf(PropTypes.object).isRequired,
+    activeCardIndex: PropTypes.number.isRequired,
+    onMouseMove: PropTypes.func.isRequired
 }
 
 export default SearchDropdown;

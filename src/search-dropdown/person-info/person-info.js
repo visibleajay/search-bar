@@ -60,6 +60,8 @@ PersonInfo.propTypes = {
         items: PropTypes.arrayOf(PropTypes.string.isRequired),
         address: PropTypes.string.isRequired
     }),
+    searchText: PropTypes.string.isRequired,
+    active: PropTypes.bool.isRequired,
     handleMouseMove: PropTypes.func.isRequired
 };
 

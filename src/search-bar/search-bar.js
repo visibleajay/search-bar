@@ -36,7 +36,9 @@ function SearchBar({value, onSearchInput, onKeyDown, onSearchDropdownVisible}) {
 
 SearchBar.propTypes =   {
     value: PropTypes.string.isRequired,
-    onSearchInput: PropTypes.func.isRequired
+    onSearchInput: PropTypes.func.isRequired,
+    onKeyDown: PropTypes.func.isRequired,
+    onSearchDropdownVisible: PropTypes.func.isRequired
 }
 
 export default SearchBar;
