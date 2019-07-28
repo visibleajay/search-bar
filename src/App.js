@@ -1,116 +1,110 @@
-import React from 'react';
+import React, { useState, useReducer, useCallback, useEffect, useMemo } from 'react';
 import './App.css';
 
 import SearchBar from './search-bar/search-bar';
 import SearchDropdown from './search-dropdown/search-dropdown';
 
-class App extends React.PureComponent{
-  
-  allUsers = [];
 
-  state    = {
+function reducer(state, action) {
+  return {...state, ...action};
+}
+
+function App(props) {
+  
+  const [allUsers, setUsers] = useState([]);
+  const [cardIndex, setCardIndex] = useState(0);
+
+  const InitialState = {
     searchText: "",
     users: [],
     keyPressCount: 0,
     isVisible: true,
   };
 
-  addToString = (user) => {
-    const separator = "/%%%/";
-    return { ...user, toString() {
-      return user.id + separator + user.name + separator + user.address + separator + user.items.join(separator);
-    }};
-  }
+  const [state, dispatch]   = useReducer( reducer, InitialState );
 
-  componentDidMount() {
+  useEffect(() => {
     const URL = "https://www.mocky.io/v2/5ba8efb23100007200c2750c";
 
-    const fetchUserInfo = (URL, addToString ) => {
-      fetch(URL)
-      .then( response => {
-          if ( response.status !== 200 ) {
-            console.log("App comp.", "Issue in fetching information " + response.status);
-            return;
-          }
-  
-          response.json().then( data => {
-            if ( Array.isArray(data) ) {
-              this.allUsers = data.map( (user) => {
-                return addToString(user);
-              });
-            }
-  
-          });
-  
-      }).catch( error => {
-        console.log("App Comp.", "Issue in fetching information.")
-      });
+    function addToString(user){
+      const separator = "/%%%/";
+      return { ...user, toString() {
+        return user.id + separator + user.name + separator + user.address + separator + user.items.join(separator);
+      }};
     }
-    
-    fetchUserInfo( URL, this.addToString )
 
-  }
+    fetch(URL).then( response => {
+        if ( response.status !== 200 ) {
+          console.log("App comp.", "Issue in fetching information " + response.status);
+          return;
+        }
 
-  handleSearchInput = (searchText) => {
-    const filteredUsers  = this.allUsers.filter( user => searchText && user.toString().includes(searchText) );
-    this.setState({
+        response.json().then( data => {
+          if ( Array.isArray(data) ) {
+            const allUsers = data.map( (user) => {
+              return addToString(user);
+            });
+            setUsers(allUsers);
+          }
+        });
+
+    }).catch( error => {
+      console.log("App Comp.", "Issue in fetching information.")
+    });
+
+  }, [])
+
+  function handleSearchInput(searchText){
+    const filteredUsers  = allUsers.filter( user => searchText && user.toString().includes(searchText) );
+    return {
       searchText: searchText,
       users: filteredUsers,
       keyPressCount: 0
-    });
+    };
   } 
 
-  handleKeyDown = ( event ) => {
+  function handleKeyDown( event, {keyPressCount, users} ){
     const arrowDown = 40;
     const arrowUp   = 38;
 
-    let keyPressCount = this.state.keyPressCount;
-    const lastUser    = this.state.users.length - 1;
+    let updatedActiveCardIndex = keyPressCount;
+    const lastUser    = users.length - 1;
     const firstUser   = 0
 
     if ( event.keyCode === arrowUp ) {
       // Up Arrow.
-      if ( keyPressCount === firstUser ) {
-        keyPressCount = lastUser;
+      if ( updatedActiveCardIndex === firstUser ) {
+        updatedActiveCardIndex = lastUser;
       } else {
-        keyPressCount = keyPressCount - 1;
+        updatedActiveCardIndex = updatedActiveCardIndex - 1;
       }
       
     } else if ( event.keyCode === arrowDown ) {
       // Down Arrow.
-      if ( keyPressCount === lastUser ) {
-        keyPressCount = firstUser;
+      if ( updatedActiveCardIndex === lastUser ) {
+        updatedActiveCardIndex = firstUser;
       } else {
-        keyPressCount = keyPressCount + 1;
+        updatedActiveCardIndex = updatedActiveCardIndex + 1;
       }
     }
-    this.setState({keyPressCount})
+    return updatedActiveCardIndex;
   }
 
-  handleMouseMove = (cardIndex) => {
-    this.setState({keyPressCount: cardIndex});
-  }
+  useEffect(() => dispatch({keyPressCount: cardIndex}), [cardIndex]);
 
-  handleSearchDropdownVisible = ( isVisible ) => {
-    this.setState({isVisible})
-  }
-
-
-  render() {
-    return (
-      <div className="App">
-        <SearchBar onSearchInput={this.handleSearchInput} value={this.state.searchText} onKeyDown={this.handleKeyDown} 
-                   onSearchDropdownVisible={this.handleSearchDropdownVisible}/>
-        <SearchDropdown visibility={this.state.isVisible}
-                        searchText={this.state.searchText} 
-                        users={this.state.users} 
-                        handleCardClick={() => this.setState({isVisible: false})}
-                        activeCardIndex={this.state.keyPressCount} 
-                        onMouseMove={this.handleMouseMove} />
-      </div>
-    );
-  }
-  
+  return (
+    <div className="App">
+      <SearchBar value={state.searchText} 
+                 onSearchInput={(searchText) => dispatch(handleSearchInput(searchText))} onKeyDown={(event) => setCardIndex(handleKeyDown(event, state)) } 
+                 onSearchDropdownVisible={ (isVisible) => {} }/>
+      <SearchDropdown visibility={state.isVisible}
+                      searchText={state.searchText} 
+                      users={state.users} 
+                      handleCardClick={() => dispatch({isVisible: false})}
+                      activeCardIndex={state.keyPressCount} 
+                      onMouseMove={(index) => setCardIndex(index)} />
+    </div>
+  );
 }
 
 export default App;
