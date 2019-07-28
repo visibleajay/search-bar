@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './person-info.css';
 
-function PersonInfo ({ person, searchText, active, handleMouseMove }) {
+function PersonInfo ({ person, searchText, active, handleMouseMove, onClick }) {
 
     const ref   = useRef();
 
@@ -43,7 +43,7 @@ function PersonInfo ({ person, searchText, active, handleMouseMove }) {
 
 
     return (
-        <div className={`PersonInfo ${PersonActive}`} onMouseMove={handleMouseMove} ref={ref}>
+        <div className={`PersonInfo ${PersonActive}`} onMouseMove={handleMouseMove} ref={ref} onClick={onClick}>
             <span style={{'fontWeight': 700}}>{getView('id')}</span>
             <span style={{'paddingBottom': '5px'}}><i>{getView('name')}</i></span>
             <span className="item" style={{'display': itemDisplayState}}>{itemView}</span>

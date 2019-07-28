@@ -7,7 +7,7 @@ import PersonInfo from './person-info/person-info.js';
 import './search-dropdown.css';
 
 
-function SearchDropdown({visibility, searchText, users, activeCardIndex, onMouseMove}) {
+function SearchDropdown({visibility, searchText, users, activeCardIndex, onMouseMove, handleCardClick}) {
 
     function noUserCard(hideCard) {
         return (
@@ -20,6 +20,7 @@ function SearchDropdown({visibility, searchText, users, activeCardIndex, onMouse
             <div className="User" tabIndex="0">
                 {users.map( (person, userIndex) => 
                     <PersonInfo key={person.id} 
+                                onClick={handleCardClick}
                                 active={ activeCardIndex === userIndex}
                                 handleMouseMove={ () => onMouseMove(userIndex) }
                                 person={person} searchText={searchText} />

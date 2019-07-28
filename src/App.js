@@ -95,6 +95,7 @@ class App extends React.PureComponent{
     this.setState({isVisible})
   }
 
+
   render() {
     return (
       <div className="App">
@@ -103,6 +104,7 @@ class App extends React.PureComponent{
         <SearchDropdown visibility={this.state.isVisible}
                         searchText={this.state.searchText} 
                         users={this.state.users} 
+                        handleCardClick={() => this.setState({isVisible: false})}
                         activeCardIndex={this.state.keyPressCount} 
                         onMouseMove={this.handleMouseMove} />
       </div>
