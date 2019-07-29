@@ -10,9 +10,6 @@ function reducer(state, action) {
 }
 
 function App(props) {
-  
-  const [allUsers, setUsers] = useState([]);
-  const [cardIndex, setCardIndex] = useState(0);
 
   const InitialState = {
     searchText: "",
@@ -22,6 +19,9 @@ function App(props) {
   };
 
   const [state, dispatch]   = useReducer( reducer, InitialState );
+  const [allUsers, setUsers] = useState([]);
+  const [cardIndex, setCardIndex] = useState(0);
+
 
   useEffect(() => {
     const URL = "https://www.mocky.io/v2/5ba8efb23100007200c2750c";
@@ -53,6 +53,8 @@ function App(props) {
     });
 
   }, [])
+
+  useEffect(() => dispatch({keyPressCount: cardIndex}), [cardIndex]);
 
   function handleSearchInput(searchText){
     const filteredUsers  = allUsers.filter( user => searchText && user.toString().includes(searchText) );
@@ -90,13 +92,11 @@ function App(props) {
     return updatedActiveCardIndex;
   }
 
-  useEffect(() => dispatch({keyPressCount: cardIndex}), [cardIndex]);
-
   return (
     <div className="App">
       <SearchBar value={state.searchText} 
                  onSearchInput={(searchText) => dispatch(handleSearchInput(searchText))} onKeyDown={(event) => setCardIndex(handleKeyDown(event, state)) } 
-                 onSearchDropdownVisible={ (isVisible) => {} }/>
+                 onSearchDropdownVisible={ (isVisible) => dispatch({isVisible}) }/>
       <SearchDropdown visibility={state.isVisible}
                       searchText={state.searchText} 
                       users={state.users} 
